@@ -1,0 +1,37 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+ 
+sourceCompatibility = 1.6
+version = '0.1'
+ 
+repositories {
+  mavenCentral()
+}
+ 
+jar {
+  manifest {
+    attributes 'Implementation-Title': 'Spring Template', 'Implementation-Version': version 
+  }
+}
+ 
+dependencies {
+  providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+  //compile 'com.amazonaws:aws-java-sdk:1.6.4'
+  
+  compile 'javax.ws.rs:jsr311-api:1.1.1'
+  
+  //compile 'org.springframework:spring-beans:3.2.1.RELEASE'
+  //compile 'org.springframework:spring-context:3.2.1.RELEASE'
+  //compile 'org.springframework:spring-web:3.2.1.RELEASE'
+  //compile 'org.springframework:spring-core:3.2.1.RELEASE'
+  //compile 'org.springframework:spring-aop:3.2.1.RELEASE'
+  
+  compile 'org.springframework:spring-web:3.2.4.RELEASE'
+  
+  compile 'com.sun.jersey:jersey-server:1.17.1'
+  compile 'com.sun.jersey:jersey-core:1.17.1'
+  compile 'com.sun.jersey:jersey-servlet:1.17.1'
+  compile 'com.sun.jersey:jersey-json:1.17.1'
+  compile 'com.sun.jersey.contribs:jersey-spring:1.17.1'
+}
