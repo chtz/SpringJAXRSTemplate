@@ -21,7 +21,7 @@ import com.amazonaws.services.dynamodbv2.model.DescribeTableResult;
 import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException;
 
 public class DynamoGeoService {
-	private final GeoDataManager geoDataManager;
+	private final GeoDataManager geoDataManager; //FIXME re-evaluate production-readieness of this lib (starts new threads, no pagination support, ...)
 
 	public DynamoGeoService(GeoDataManager geoDataManager) {
 		this.geoDataManager = geoDataManager;
