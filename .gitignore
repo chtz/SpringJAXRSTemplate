@@ -6,3 +6,4 @@ gradle.properties
 .settings/
 bin/
 dynamoMock/
+pgdata/
