@@ -7,6 +7,10 @@ version = '0.1'
  
 repositories {
   mavenCentral()
+  
+  flatDir {
+     dirs 'thirdparty'
+  }
 }
  
 jar {
@@ -17,7 +21,12 @@ jar {
  
 dependencies {
   providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+  
   compile 'com.amazonaws:aws-java-sdk:1.6.4'
+  
+  compile ':dynamodb-geo:1.0.0'
+  compile ':guava:r09'
+  compile ':s2-geometry-java:'
   
   compile 'javax.ws.rs:jsr311-api:1.1.1'
   
