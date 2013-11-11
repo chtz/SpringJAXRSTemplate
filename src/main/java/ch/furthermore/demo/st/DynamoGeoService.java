@@ -6,16 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import com.amazonaws.geo.GeoDataManager;
 import com.amazonaws.geo.GeoDataManagerConfiguration;
 import com.amazonaws.geo.model.GeoPoint;
 import com.amazonaws.geo.model.PutPointRequest;
 import com.amazonaws.geo.model.QueryRadiusRequest;
 import com.amazonaws.geo.model.QueryRadiusResult;
+import com.amazonaws.geo.util.GeoJsonMapper;
 import com.amazonaws.geo.util.GeoTableUtil;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
@@ -24,7 +21,6 @@ import com.amazonaws.services.dynamodbv2.model.DescribeTableResult;
 import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException;
 
 public class DynamoGeoService {
-	private final ObjectMapper mapper = new ObjectMapper();
 	private final GeoDataManager geoDataManager;
 
 	public DynamoGeoService(GeoDataManager geoDataManager) {
@@ -57,12 +53,11 @@ public class DynamoGeoService {
 		for (Map<String, AttributeValue> item : queryRadiusResult.getItem()) {
 			try {
 				String geoJsonString = item.get(config().getGeoJsonAttributeName()).getS();
-				JsonParser jsonParser = mapper.getJsonFactory().createJsonParser(geoJsonString);
-				JsonNode jsonNode = mapper.readTree(jsonParser);
-	
+				GeoPoint geoPoint = GeoJsonMapper.geoPointFromString(geoJsonString);
+				
 				PointData pd = new PointData();
-				pd.setLatitude(jsonNode.get("coordinates").get(0).getDoubleValue());
-				pd.setLongitude(jsonNode.get("coordinates").get(1).getDoubleValue());
+				pd.setLatitude(geoPoint.getLatitude());
+				pd.setLongitude(geoPoint.getLongitude());
 				pd.setRangeKey(item.get(config().getRangeKeyAttributeName()).getS());
 				
 				for (String fa : fetchAttributes) {
