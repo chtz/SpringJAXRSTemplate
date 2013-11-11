@@ -5,3 +5,4 @@ gradle.properties
 .project
 .settings/
 bin/
+dynamoMock/
