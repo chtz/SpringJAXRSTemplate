@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -23,7 +22,8 @@ public class PointResource {
 	
 	@PostConstruct
 	public void init() {
-		geoService = dynamoGeoServiceFactory.createDynamoGeoService("fooTableX3");
+		String tableName = System.getProperty("PARAM2", "simplePointsTable");
+		geoService = dynamoGeoServiceFactory.createDynamoGeoService(tableName);
 	}
 	
 	@POST
@@ -36,24 +36,5 @@ public class PointResource {
 		geoService.putPoint(pd);
 		
 		return geoService.getPointsWithinRadius(pd.getLatitude(), pd.getLongitude(), 100.);
-	}
-	
-	@POST
-    @Path("/test2")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-    public List<PointData> pointsAroundMe2(PointData pd) {
-		pd.setRangeKey(UUID.randomUUID().toString());
-		pd.withKeyValue("category", "catB");
-		geoService.putPoint(pd);
-		
-		return geoService.getPointsWithinRadius(pd.getLatitude(), pd.getLongitude(), 100.);
-	}
-	
-	@GET
-    @Path("/test3")
-	@Produces(MediaType.APPLICATION_JSON)
-    public List<PointData> pointsOfInterest() {
-		return geoService.getPointsForCategory("catA");
 	}
 }
